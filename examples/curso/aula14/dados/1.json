@@ -1,0 +1,20 @@
+{
+    'id': 1,
+    'name': 'Judzhin',
+    'surname': 'Miles',
+    'phones': [{
+        'id': 12,
+        'ddd': '11',
+        'number': '1234-5678'
+    },{
+        'id': 13,
+        'ddd': '19',
+        'number': "9876-1234"
+    }],
+    'endereco': {
+        'id': 14,
+        'logradouro': 'rua ficticia',
+        'number': '100',
+        'complemento': 'apt 10'
+    }
+}

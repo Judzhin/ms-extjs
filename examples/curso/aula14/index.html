@@ -1,0 +1,86 @@
+<html>
+    <head>
+
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+        <link rel="stylesheet" type="text/css" href="../../../extjs/resources/css/ext-all.css">
+        <script type="text/javascript" src="../../../extjs/ext-all.js"></script>
+
+    </head>
+
+    <body></body>
+
+    <script type="text/javascript">
+
+        Ext.define('Person',{
+            extend: 'Ext.data.Model',
+
+            fields: [
+                {name: 'id', type: 'int'},
+                {name: 'name', type: 'string'},
+                {name: 'surname', type: 'string'}
+            ],
+
+            proxy: {
+                type: 'rest',
+                url: 'dados',
+                format: 'json'
+            },
+
+            hasMany: {model: 'Phone', foreignKey: 'pessoaId'},
+            hasOne: {model: 'Endereco', foreignKey: 'pessoaId'}
+        });
+
+        Ext.define('Phone',{
+            extend: 'Ext.data.Model',
+
+            fields: [
+                {name: 'id', type: 'int'},
+                {name: 'ddd', type: 'string'},
+                {name: 'number', type: 'string'},
+                {name: 'pessoaId', type: 'int'}
+            ],
+
+            belongsTo: {model: 'Person', foreignKey: 'pessoaId'}
+        });
+
+        Ext.define('Endereco',{
+            extend: 'Ext.data.Model',
+
+            fields: [
+                {name: 'id', type: 'int'},
+                {name: 'logradouro', type: 'string'},
+                {name: 'number', type: 'string'},
+                {name: 'complemento', type: 'string'},
+                {name: 'pessoaId', type: 'int'}
+            ]
+        });
+	
+        Ext.onReady(function(){
+
+            Person.load(1,{
+
+                success: function (person){
+
+                    console.log('Persone name ' + person.get('name'));
+
+                    var phones = person.phones();
+
+                    phones.each(function (tel){
+					
+                        console.log(tel.get('ddd') + ' ' + tel.get('number'));
+
+                        var p = tel.getPerson();
+
+                        console.log('Numero pertence a ' + p.get('name'));
+                    });
+
+                    var end = person.getEndereco();
+
+                    console.log(end.get('logradouro') + ' ' + end.get('number'));
+                }
+            });
+		
+        });
+    </script>
+
+</html>
